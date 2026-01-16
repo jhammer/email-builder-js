@@ -85,24 +85,20 @@ export default function TemplatePanel() {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Stack px={2} direction="row" gap={2} width="100%" justifyContent="space-between" alignItems="center">
-          <Stack direction="row" spacing={2}>
-            <MainTabsGroup />
-          </Stack>
-          <Stack direction="row" spacing={2}>
-            <ToggleButtonGroup value={selectedScreenSize} exclusive size="small" onChange={handleScreenSizeChange}>
-              <ToggleButton value="desktop">
-                <Tooltip title="Desktop view">
-                  <MonitorOutlined fontSize="small" />
-                </Tooltip>
-              </ToggleButton>
-              <ToggleButton value="mobile">
-                <Tooltip title="Mobile view">
-                  <PhoneIphoneOutlined fontSize="small" />
-                </Tooltip>
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </Stack>
+        <Stack px={2} direction="row" gap={2} width="100%" justifyContent="flex-end" alignItems="center">
+          <MainTabsGroup />
+          <ToggleButtonGroup value={selectedScreenSize} exclusive size="small" onChange={handleScreenSizeChange}>
+            <ToggleButton value="desktop">
+              <Tooltip title="Desktop view">
+                <MonitorOutlined fontSize="small" />
+              </Tooltip>
+            </ToggleButton>
+            <ToggleButton value="mobile">
+              <Tooltip title="Mobile view">
+                <PhoneIphoneOutlined fontSize="small" />
+              </Tooltip>
+            </ToggleButton>
+          </ToggleButtonGroup>
         </Stack>
         <ToggleInspectorPanelButton />
       </Stack>
