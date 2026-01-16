@@ -8,7 +8,32 @@ import RESPOND_TO_MESSAGE from './sample/respond-to-message';
 import SUBSCRIPTION_RECEIPT from './sample/subscription-receipt';
 import WELCOME from './sample/welcome';
 
-export default function getConfiguration(template: string) {
+export const EMAIL_BUILDER_DATA_ELEMENT_ID = 'email-builder-data';
+
+function getConfigurationFromScriptElement() {
+  const scriptElement = document.getElementById(EMAIL_BUILDER_DATA_ELEMENT_ID);
+  if (!scriptElement) {
+    return null;
+  }
+
+  const content = scriptElement.textContent?.trim();
+  if (!content || content === '{}') {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(content);
+    if (parsed && typeof parsed === 'object' && 'root' in parsed) {
+      return parsed;
+    }
+  } catch {
+    console.error(`Couldn't load configuration from script element.`);
+  }
+
+  return null;
+}
+
+function getConfigurationFromHash(template: string) {
   if (template.startsWith('#sample/')) {
     const sampleName = template.replace('#sample/', '');
     switch (sampleName) {
@@ -39,6 +64,22 @@ export default function getConfiguration(template: string) {
     } catch {
       console.error(`Couldn't load configuration from hash.`);
     }
+  }
+
+  return null;
+}
+
+export default function getConfiguration(template: string) {
+  // First, try to read from script element
+  const scriptConfig = getConfigurationFromScriptElement();
+  if (scriptConfig) {
+    return scriptConfig;
+  }
+
+  // Fall back to URL hash
+  const hashConfig = getConfigurationFromHash(template);
+  if (hashConfig) {
+    return hashConfig;
   }
 
   return EMPTY_EMAIL_MESSAGE;

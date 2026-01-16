@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import getConfiguration from '../../getConfiguration';
+import getConfiguration, { EMAIL_BUILDER_DATA_ELEMENT_ID } from '../../getConfiguration';
 
 import { TEditorConfiguration } from './core';
 
@@ -96,3 +96,13 @@ export function toggleInspectorDrawerOpen() {
 export function setSelectedScreenSize(selectedScreenSize: TValue['selectedScreenSize']) {
   return editorStateStore.setState({ selectedScreenSize });
 }
+
+// Subscribe to document changes and persist to script element
+editorStateStore.subscribe((state, prevState) => {
+  if (state.document !== prevState.document) {
+    const scriptElement = document.getElementById(EMAIL_BUILDER_DATA_ELEMENT_ID);
+    if (scriptElement) {
+      scriptElement.textContent = JSON.stringify(state.document);
+    }
+  }
+});
