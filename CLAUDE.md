@@ -5,6 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build and Development Commands
 
 ```bash
+# Install dependencies (required before building)
+npm install
+
 # Build all packages
 npm run build --workspaces
 
