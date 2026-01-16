@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { ZodError } from 'zod';
 
 import {
+  FileUploadOutlined,
   VerticalAlignBottomOutlined,
   VerticalAlignCenterOutlined,
   VerticalAlignTopOutlined,
 } from '@mui/icons-material';
-import { Stack, ToggleButton } from '@mui/material';
+import { Button, CircularProgress, Stack, ToggleButton } from '@mui/material';
 import { ImageProps, ImagePropsSchema } from '@usewaypoint/block-image';
+
+import { useImageUpload } from '../../../../hooks/useImageUpload';
 
 import BaseSidebarPanel from './helpers/BaseSidebarPanel';
 import RadioGroupInput from './helpers/inputs/RadioGroupInput';
@@ -21,6 +24,7 @@ type ImageSidebarPanelProps = {
 };
 export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelProps) {
   const [, setErrors] = useState<ZodError | null>(null);
+  const { isUploading, isConfigured, selectAndUploadImage } = useImageUpload();
 
   const updateData = (d: unknown) => {
     const res = ImagePropsSchema.safeParse(d);
@@ -29,6 +33,13 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
       setErrors(null);
     } else {
       setErrors(res.error);
+    }
+  };
+
+  const handleUploadClick = async () => {
+    const url = await selectAndUploadImage();
+    if (url) {
+      updateData({ ...data, props: { ...data.props, url } });
     }
   };
 
@@ -42,6 +53,16 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
           updateData({ ...data, props: { ...data.props, url } });
         }}
       />
+      {isConfigured && (
+        <Button
+          variant="outlined"
+          startIcon={isUploading ? <CircularProgress size={16} /> : <FileUploadOutlined />}
+          onClick={handleUploadClick}
+          disabled={isUploading}
+        >
+          {isUploading ? 'Uploading...' : 'Upload Image'}
+        </Button>
+      )}
 
       <TextInput
         label="Alt text"
