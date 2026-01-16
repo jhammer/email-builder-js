@@ -13,6 +13,7 @@ type TValue = {
   selectedScreenSize: 'desktop' | 'mobile';
 
   inspectorDrawerOpen: boolean;
+  dirty: boolean;
 };
 
 const editorStateStore = create<TValue>(() => ({
@@ -23,6 +24,7 @@ const editorStateStore = create<TValue>(() => ({
   selectedScreenSize: 'desktop',
 
   inspectorDrawerOpen: true,
+  dirty: false,
 }));
 
 export function useDocument() {
@@ -97,12 +99,24 @@ export function setSelectedScreenSize(selectedScreenSize: TValue['selectedScreen
   return editorStateStore.setState({ selectedScreenSize });
 }
 
+export function useDirty() {
+  return editorStateStore((s) => s.dirty);
+}
+
+export function clearDirty() {
+  return editorStateStore.setState({ dirty: false });
+}
+
 // Subscribe to document changes and persist to script element
 editorStateStore.subscribe((state, prevState) => {
   if (state.document !== prevState.document) {
     const scriptElement = document.getElementById(EMAIL_BUILDER_DATA_ELEMENT_ID);
     if (scriptElement) {
       scriptElement.textContent = JSON.stringify(state.document);
+    }
+    // Mark as dirty when document changes
+    if (!state.dirty) {
+      editorStateStore.setState({ dirty: true });
     }
   }
 });

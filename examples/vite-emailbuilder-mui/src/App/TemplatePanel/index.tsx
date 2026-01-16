@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { MonitorOutlined, PhoneIphoneOutlined } from '@mui/icons-material';
 import { Box, Button, Stack, SxProps, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
@@ -6,7 +6,9 @@ import { Reader } from '@usewaypoint/email-builder';
 
 import EditorBlock from '../../documents/editor/EditorBlock';
 import {
+  clearDirty,
   setSelectedScreenSize,
+  useDirty,
   useDocument,
   useSelectedMainTab,
   useSelectedScreenSize,
@@ -21,6 +23,19 @@ export default function TemplatePanel() {
   const document = useDocument();
   const selectedMainTab = useSelectedMainTab();
   const selectedScreenSize = useSelectedScreenSize();
+  const dirty = useDirty();
+
+  // Warn user before leaving if there are unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (dirty) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [dirty]);
 
   let mainBoxSx: SxProps = {
     height: '100%',
@@ -48,6 +63,7 @@ export default function TemplatePanel() {
   };
 
   const handleSaveAndClose = () => {
+    clearDirty();
     window.close();
   };
 
