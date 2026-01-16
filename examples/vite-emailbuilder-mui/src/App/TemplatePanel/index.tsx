@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { MonitorOutlined, PhoneIphoneOutlined } from '@mui/icons-material';
-import { Box, Stack, SxProps, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
+import { Box, Button, Stack, SxProps, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 import { Reader } from '@usewaypoint/email-builder';
 
 import EditorBlock from '../../documents/editor/EditorBlock';
@@ -47,6 +47,10 @@ export default function TemplatePanel() {
     }
   };
 
+  const handleSaveAndClose = () => {
+    window.close();
+  };
+
   const renderMainPanel = () => {
     switch (selectedMainTab) {
       case 'editor':
@@ -85,20 +89,25 @@ export default function TemplatePanel() {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Stack px={2} direction="row" gap={2} width="100%" justifyContent="flex-end" alignItems="center">
-          <MainTabsGroup />
-          <ToggleButtonGroup value={selectedScreenSize} exclusive size="small" onChange={handleScreenSizeChange}>
-            <ToggleButton value="desktop">
-              <Tooltip title="Desktop view">
-                <MonitorOutlined fontSize="small" />
-              </Tooltip>
-            </ToggleButton>
-            <ToggleButton value="mobile">
-              <Tooltip title="Mobile view">
-                <PhoneIphoneOutlined fontSize="small" />
-              </Tooltip>
-            </ToggleButton>
-          </ToggleButtonGroup>
+        <Stack px={2} direction="row" gap={2} width="100%" justifyContent="space-between" alignItems="center">
+          <Button variant="contained" size="small" onClick={handleSaveAndClose}>
+            Save and Close
+          </Button>
+          <Stack direction="row" gap={2} alignItems="center">
+            <MainTabsGroup />
+            <ToggleButtonGroup value={selectedScreenSize} exclusive size="small" onChange={handleScreenSizeChange}>
+              <ToggleButton value="desktop">
+                <Tooltip title="Desktop view">
+                  <MonitorOutlined fontSize="small" />
+                </Tooltip>
+              </ToggleButton>
+              <ToggleButton value="mobile">
+                <Tooltip title="Mobile view">
+                  <PhoneIphoneOutlined fontSize="small" />
+                </Tooltip>
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Stack>
         </Stack>
         <ToggleInspectorPanelButton />
       </Stack>
