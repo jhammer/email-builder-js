@@ -123,5 +123,15 @@ export const EditorBlock = buildBlockComponent(EDITOR_DICTIONARY);
 export const EditorBlockSchema = buildBlockConfigurationSchema(EDITOR_DICTIONARY);
 export const EditorConfigurationSchema = z.record(z.string(), EditorBlockSchema);
 
+export const MessageMetadataSchema = z.object({
+  name: z.string().optional(),
+  fromName: z.string().optional(),
+  fromEmail: z.string().optional(),
+  subject: z.string().optional(),
+});
+
 export type TEditorBlock = z.infer<typeof EditorBlockSchema>;
-export type TEditorConfiguration = Record<string, TEditorBlock>;
+export type TMessageMetadata = z.infer<typeof MessageMetadataSchema>;
+export type TEditorConfiguration = Record<string, TEditorBlock> & {
+  _meta?: TMessageMetadata;
+};

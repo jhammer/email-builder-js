@@ -5,6 +5,7 @@ import { Box, Drawer, Tab, Tabs } from '@mui/material';
 import { setSidebarTab, useInspectorDrawerOpen, useSelectedSidebarTab } from '../../documents/editor/EditorContext';
 
 import ConfigurationPanel from './ConfigurationPanel';
+import MessagePanel from './MessagePanel';
 import StylesPanel from './StylesPanel';
 
 export const INSPECTOR_DRAWER_WIDTH = 320;
@@ -19,6 +20,8 @@ export default function InspectorDrawer() {
         return <ConfigurationPanel />;
       case 'styles':
         return <StylesPanel />;
+      case 'message':
+        return <MessagePanel />;
     }
   };
 
@@ -34,6 +37,7 @@ export default function InspectorDrawer() {
       <Box sx={{ width: INSPECTOR_DRAWER_WIDTH, height: 49, borderBottom: 1, borderColor: 'divider' }}>
         <Box px={2}>
           <Tabs value={selectedSidebarTab} onChange={(_, v) => setSidebarTab(v)}>
+            <Tab value="message" label="Message" />
             <Tab value="styles" label="Styles" />
             <Tab value="block-configuration" label="Inspect" />
           </Tabs>
