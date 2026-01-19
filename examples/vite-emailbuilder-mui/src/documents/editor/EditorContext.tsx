@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import getConfiguration, { EMAIL_BUILDER_DATA_ELEMENT_ID } from '../../getConfiguration';
+import getConfiguration from '../../getConfiguration';
 
 import { TEditorConfiguration } from './core';
 
@@ -107,14 +107,9 @@ export function clearDirty() {
   return editorStateStore.setState({ dirty: false });
 }
 
-// Subscribe to document changes and persist to script element
+// Subscribe to document changes and mark as dirty
 editorStateStore.subscribe((state, prevState) => {
   if (state.document !== prevState.document) {
-    const scriptElement = document.getElementById(EMAIL_BUILDER_DATA_ELEMENT_ID);
-    if (scriptElement) {
-      scriptElement.textContent = JSON.stringify(state.document);
-    }
-    // Mark as dirty when document changes
     if (!state.dirty) {
       editorStateStore.setState({ dirty: true });
     }
