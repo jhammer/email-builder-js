@@ -9,6 +9,30 @@ import SUBSCRIPTION_RECEIPT from './sample/subscription-receipt';
 import WELCOME from './sample/welcome';
 
 export const EMAIL_BUILDER_DATA_ELEMENT_ID = 'email-builder-data';
+export const EMAIL_BUILDER_CONFIG_ELEMENT_ID = 'email-builder-config';
+
+type AppConfig = {
+  saveUrl: string;
+};
+
+const DEFAULT_CONFIG: AppConfig = {
+  saveUrl: '/api/placeholder/save',
+};
+
+export function getAppConfig(): AppConfig {
+  const scriptElement = document.getElementById(EMAIL_BUILDER_CONFIG_ELEMENT_ID);
+  if (!scriptElement) {
+    return DEFAULT_CONFIG;
+  }
+
+  try {
+    const parsed = JSON.parse(scriptElement.textContent || '{}');
+    return { ...DEFAULT_CONFIG, ...parsed };
+  } catch {
+    console.error("Couldn't parse app config from script element.");
+    return DEFAULT_CONFIG;
+  }
+}
 
 function getConfigurationFromScriptElement() {
   const scriptElement = document.getElementById(EMAIL_BUILDER_DATA_ELEMENT_ID);

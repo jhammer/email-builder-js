@@ -5,6 +5,7 @@ import { Box, Button, Stack, SxProps, ToggleButton, ToggleButtonGroup, Tooltip }
 import { Reader } from '@usewaypoint/email-builder';
 
 import EditorBlock from '../../documents/editor/EditorBlock';
+import { getAppConfig } from '../../getConfiguration';
 import {
   clearDirty,
   setSelectedScreenSize,
@@ -63,8 +64,9 @@ export default function TemplatePanel() {
   };
 
   const handleSaveAndClose = async () => {
+    const { saveUrl } = getAppConfig();
     try {
-      const response = await fetch('/api/placeholder/save', {
+      const response = await fetch(saveUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
