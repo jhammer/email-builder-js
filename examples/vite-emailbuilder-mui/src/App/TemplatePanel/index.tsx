@@ -62,9 +62,26 @@ export default function TemplatePanel() {
     }
   };
 
-  const handleSaveAndClose = () => {
-    clearDirty();
-    window.close();
+  const handleSaveAndClose = async () => {
+    try {
+      const response = await fetch('/api/placeholder/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(document),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save document');
+      }
+
+      const { redirectUrl } = await response.json();
+      clearDirty();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error('Error saving document:', error);
+    }
   };
 
   const renderMainPanel = () => {
