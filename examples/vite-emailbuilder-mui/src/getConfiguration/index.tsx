@@ -13,10 +13,12 @@ export const EMAIL_BUILDER_CONFIG_ELEMENT_ID = 'email-builder-config';
 
 type AppConfig = {
   saveUrl: string;
+  presignedUrlEndpoint: string | null;
 };
 
 const DEFAULT_CONFIG: AppConfig = {
   saveUrl: '/api/placeholder/save',
+  presignedUrlEndpoint: null,
 };
 
 export function getAppConfig(): AppConfig {

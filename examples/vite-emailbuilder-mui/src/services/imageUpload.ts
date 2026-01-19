@@ -1,13 +1,4 @@
-/**
- * Configuration for the S3 image upload service.
- * The presignedUrlEndpoint should return a JSON response with:
- * - url: The presigned URL to upload to
- * - fields: (optional) Additional form fields for the upload
- * - publicUrl: The public URL where the image will be accessible after upload
- */
-export interface ImageUploadConfig {
-  presignedUrlEndpoint: string;
-}
+import { getAppConfig } from '../getConfiguration';
 
 interface PresignedUrlResponse {
   url: string;
@@ -15,23 +6,18 @@ interface PresignedUrlResponse {
   publicUrl: string;
 }
 
-let config: ImageUploadConfig | null = null;
-
-export function configureImageUpload(uploadConfig: ImageUploadConfig): void {
-  config = uploadConfig;
-}
-
-export function getImageUploadConfig(): ImageUploadConfig | null {
-  return config;
+export function isImageUploadConfigured(): boolean {
+  return getAppConfig().presignedUrlEndpoint !== null;
 }
 
 export async function uploadImage(file: File): Promise<string> {
-  if (!config) {
-    throw new Error('Image upload not configured. Call configureImageUpload() first.');
+  const { presignedUrlEndpoint } = getAppConfig();
+  if (!presignedUrlEndpoint) {
+    throw new Error('Image upload not configured. Set presignedUrlEndpoint in config.');
   }
 
   // Request presigned URL from the endpoint
-  const presignedResponse = await fetch(config.presignedUrlEndpoint, {
+  const presignedResponse = await fetch(presignedUrlEndpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 
-import { getImageUploadConfig, uploadImage } from '../services/imageUpload';
+import { isImageUploadConfigured, uploadImage } from '../services/imageUpload';
 
 interface UseImageUploadResult {
   isUploading: boolean;
@@ -14,7 +14,7 @@ export function useImageUpload(): UseImageUploadResult {
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const isConfigured = getImageUploadConfig() !== null;
+  const isConfigured = isImageUploadConfigured();
 
   const selectAndUploadImage = useCallback(async (): Promise<string | null> => {
     return new Promise((resolve) => {
