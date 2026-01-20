@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ZodError } from 'zod';
 
 import LinkOutlined from '@mui/icons-material/LinkOutlined';
-import { Button } from '@mui/material';
+import PersonOutlined from '@mui/icons-material/PersonOutlined';
+import { Button, Menu, MenuItem } from '@mui/material';
 import { TextProps, TextPropsDefaults, TextPropsSchema } from '@usewaypoint/block-text';
+
+const MAIL_MERGE_TAGS = [
+  { label: 'First Name', value: '[first name]' },
+  { label: 'Last Name', value: '[last name]' },
+  { label: 'Email Address', value: '[email address]' },
+];
 
 import BaseSidebarPanel from './helpers/BaseSidebarPanel';
 import BooleanInput from './helpers/inputs/BooleanInput';
@@ -18,6 +25,9 @@ type TextSidebarPanelProps = {
 export default function TextSidebarPanel({ data, setData }: TextSidebarPanelProps) {
   const [, setErrors] = useState<ZodError | null>(null);
   const [linkDialogOpen, setLinkDialogOpen] = useState(false);
+  const [mergeTagMenuAnchor, setMergeTagMenuAnchor] = useState<HTMLElement | null>(null);
+  const textInputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+  const cursorPositionRef = useRef<number | null>(null);
 
   const updateData = (d: unknown) => {
     const res = TextPropsSchema.safeParse(d);
@@ -35,6 +45,27 @@ export default function TextSidebarPanel({ data, setData }: TextSidebarPanelProp
     updateData({ ...data, props: { ...data.props, text: newText } });
   };
 
+  const saveCursorPosition = () => {
+    if (textInputRef.current) {
+      cursorPositionRef.current = textInputRef.current.selectionStart;
+    }
+  };
+
+  const handleInsertMergeTag = (tag: string) => {
+    const currentText = data.props?.text ?? '';
+    const cursorPos = cursorPositionRef.current;
+
+    let newText: string;
+    if (cursorPos !== null && cursorPos >= 0 && cursorPos <= currentText.length) {
+      newText = currentText.slice(0, cursorPos) + tag + currentText.slice(cursorPos);
+    } else {
+      newText = currentText ? `${currentText}${tag}` : tag;
+    }
+
+    updateData({ ...data, props: { ...data.props, text: newText } });
+    setMergeTagMenuAnchor(null);
+  };
+
   return (
     <BaseSidebarPanel title="Text block">
       <TextInput
@@ -42,16 +73,37 @@ export default function TextSidebarPanel({ data, setData }: TextSidebarPanelProp
         rows={5}
         value={data.props?.text ?? ''}
         onChange={(text) => updateData({ ...data, props: { ...data.props, text } })}
+        inputRef={textInputRef}
       />
       <Button
         variant="text"
         size="small"
         startIcon={<LinkOutlined />}
         onClick={() => setLinkDialogOpen(true)}
-        sx={{ mb: 1 }}
       >
         Insert Link
       </Button>
+      <Button
+        variant="text"
+        size="small"
+        startIcon={<PersonOutlined />}
+        onMouseDown={saveCursorPosition}
+        onClick={(e) => setMergeTagMenuAnchor(e.currentTarget)}
+        sx={{ mb: 1 }}
+      >
+        Insert Merge Tag
+      </Button>
+      <Menu
+        anchorEl={mergeTagMenuAnchor}
+        open={Boolean(mergeTagMenuAnchor)}
+        onClose={() => setMergeTagMenuAnchor(null)}
+      >
+        {MAIL_MERGE_TAGS.map((tag) => (
+          <MenuItem key={tag.value} onClick={() => handleInsertMergeTag(tag.value)}>
+            {tag.label}
+          </MenuItem>
+        ))}
+      </Menu>
       <BooleanInput
         label="Markdown (GitHub flavored)"
         defaultValue={data.props?.markdown ?? TextPropsDefaults.markdown}

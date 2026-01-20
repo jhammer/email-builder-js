@@ -10,8 +10,18 @@ type Props = {
   InputProps?: InputProps;
   value: string;
   onChange: (v: string) => void;
+  inputRef?: React.Ref<HTMLTextAreaElement | HTMLInputElement>;
 };
-export default function TextInput({ helperText, label, placeholder, rows, InputProps, value, onChange }: Props) {
+export default function TextInput({
+  helperText,
+  label,
+  placeholder,
+  rows,
+  InputProps,
+  value,
+  onChange,
+  inputRef,
+}: Props) {
   const isMultiline = typeof rows === 'number' && rows > 1;
   return (
     <TextField
@@ -23,6 +33,7 @@ export default function TextInput({ helperText, label, placeholder, rows, InputP
       placeholder={placeholder}
       helperText={helperText}
       InputProps={InputProps}
+      inputRef={inputRef}
       value={value}
       onChange={(ev) => {
         onChange(ev.target.value);
