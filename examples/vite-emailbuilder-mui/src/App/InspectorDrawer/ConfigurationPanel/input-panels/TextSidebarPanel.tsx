@@ -41,7 +41,14 @@ export default function TextSidebarPanel({ data, setData }: TextSidebarPanelProp
 
   const handleInsertLink = (markdownLink: string) => {
     const currentText = data.props?.text ?? '';
-    const newText = currentText ? `${currentText} ${markdownLink}` : markdownLink;
+    const cursorPos = cursorPositionRef.current;
+
+    let newText: string;
+    if (cursorPos !== null && cursorPos >= 0 && cursorPos <= currentText.length) {
+      newText = currentText.slice(0, cursorPos) + markdownLink + currentText.slice(cursorPos);
+    } else {
+      newText = currentText ? `${currentText} ${markdownLink}` : markdownLink;
+    }
     updateData({ ...data, props: { ...data.props, text: newText } });
   };
 
@@ -79,6 +86,7 @@ export default function TextSidebarPanel({ data, setData }: TextSidebarPanelProp
         variant="text"
         size="small"
         startIcon={<LinkOutlined />}
+        onMouseDown={saveCursorPosition}
         onClick={() => setLinkDialogOpen(true)}
       >
         Insert Link
