@@ -10,11 +10,21 @@ export function isImageUploadConfigured(): boolean {
   return getAppConfig().presignedUrlEndpoint !== null;
 }
 
+async function computeSha1Hex(file: File): Promise<string> {
+  const buffer = await file.arrayBuffer();
+  const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
 export async function uploadImage(file: File): Promise<string> {
   const { presignedUrlEndpoint } = getAppConfig();
   if (!presignedUrlEndpoint) {
     throw new Error('Image upload not configured. Set presignedUrlEndpoint in config.');
   }
+
+  // Compute SHA-1 hash of the file
+  const sha1Hash = await computeSha1Hex(file);
 
   // Request presigned URL from the endpoint
   const presignedResponse = await fetch(presignedUrlEndpoint, {
@@ -25,6 +35,8 @@ export async function uploadImage(file: File): Promise<string> {
     body: JSON.stringify({
       filename: file.name,
       contentType: file.type,
+      contentLength: file.size,
+      sha1: sha1Hash,
     }),
   });
 
