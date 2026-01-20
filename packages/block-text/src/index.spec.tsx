@@ -77,6 +77,7 @@ Powered by [Waypoint](https://usewaypoint.com)`,
         <Text
           props={{
             text: `## This is not <span>markdown</span>`,
+            markdown: false,
           }}
         />
       ).asFragment()
