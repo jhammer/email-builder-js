@@ -19,7 +19,7 @@ type TValue = {
 const editorStateStore = create<TValue>(() => ({
   document: getConfiguration(window.location.hash),
   selectedBlockId: null,
-  selectedSidebarTab: 'styles',
+  selectedSidebarTab: 'message',
   selectedMainTab: 'editor',
   selectedScreenSize: 'desktop',
 
