@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 import LinkOutlined from '@mui/icons-material/LinkOutlined';
 import PersonOutlined from '@mui/icons-material/PersonOutlined';
 import { Button, Menu, MenuItem } from '@mui/material';
-import { TextProps, TextPropsDefaults, TextPropsSchema } from '@usewaypoint/block-text';
+import { TextProps, /* TextPropsDefaults, */ TextPropsSchema } from '@usewaypoint/block-text';
 
 const MAIL_MERGE_TAGS = [
   { label: 'First Name', value: '[first name]' },
@@ -13,7 +13,7 @@ const MAIL_MERGE_TAGS = [
 ];
 
 import BaseSidebarPanel from './helpers/BaseSidebarPanel';
-import BooleanInput from './helpers/inputs/BooleanInput';
+// import BooleanInput from './helpers/inputs/BooleanInput';
 import TextInput from './helpers/inputs/TextInput';
 import InsertLinkDialog from './helpers/InsertLinkDialog';
 import MultiStylePropertyPanel from './helpers/style-inputs/MultiStylePropertyPanel';
@@ -112,11 +112,11 @@ export default function TextSidebarPanel({ data, setData }: TextSidebarPanelProp
           </MenuItem>
         ))}
       </Menu>
-      <BooleanInput
+      {/* <BooleanInput
         label="Markdown (GitHub flavored)"
         defaultValue={data.props?.markdown ?? TextPropsDefaults.markdown}
         onChange={(markdown) => updateData({ ...data, props: { ...data.props, markdown } })}
-      />
+      /> */}
 
       <MultiStylePropertyPanel
         names={['color', 'backgroundColor', 'fontFamily', 'fontSize', 'fontWeight', 'textAlign', 'padding']}
