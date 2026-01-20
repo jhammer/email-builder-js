@@ -6,7 +6,17 @@ import PersonOutlined from '@mui/icons-material/PersonOutlined';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { TextProps, /* TextPropsDefaults, */ TextPropsSchema } from '@usewaypoint/block-text';
 
-const MAIL_MERGE_TAGS = ['[first name]', '[last name]', '[email address]'];
+const MAIL_MERGE_TAGS = [
+  '[first name]',
+  '[last name]',
+  '[email address]',
+  '[company name]',
+  '[custom 1]',
+  '[custom 2]',
+  '[custom 3]',
+  '[custom 4]',
+  '[custom 5]',
+];
 
 import BaseSidebarPanel from './helpers/BaseSidebarPanel';
 // import BooleanInput from './helpers/inputs/BooleanInput';
