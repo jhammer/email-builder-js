@@ -6,11 +6,7 @@ import PersonOutlined from '@mui/icons-material/PersonOutlined';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { TextProps, /* TextPropsDefaults, */ TextPropsSchema } from '@usewaypoint/block-text';
 
-const MAIL_MERGE_TAGS = [
-  { label: 'First Name', value: '[first name]' },
-  { label: 'Last Name', value: '[last name]' },
-  { label: 'Email Address', value: '[email address]' },
-];
+const MAIL_MERGE_TAGS = ['[first name]', '[last name]', '[email address]'];
 
 import BaseSidebarPanel from './helpers/BaseSidebarPanel';
 // import BooleanInput from './helpers/inputs/BooleanInput';
@@ -107,8 +103,8 @@ export default function TextSidebarPanel({ data, setData }: TextSidebarPanelProp
         onClose={() => setMergeTagMenuAnchor(null)}
       >
         {MAIL_MERGE_TAGS.map((tag) => (
-          <MenuItem key={tag.value} onClick={() => handleInsertMergeTag(tag.value)}>
-            {tag.label}
+          <MenuItem key={tag} onClick={() => handleInsertMergeTag(tag)}>
+            {tag}
           </MenuItem>
         ))}
       </Menu>
