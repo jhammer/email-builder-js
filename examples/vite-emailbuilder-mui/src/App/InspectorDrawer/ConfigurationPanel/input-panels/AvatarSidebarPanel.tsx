@@ -59,14 +59,14 @@ export default function AvatarSidebarPanel({ data, setData }: AvatarSidebarPanel
       </RadioGroupInput>
       <TextInput
         label="Image URL"
-        defaultValue={imageUrl}
+        value={imageUrl}
         onChange={(imageUrl) => {
           updateData({ ...data, props: { ...data.props, imageUrl } });
         }}
       />
       <TextInput
         label="Alt text"
-        defaultValue={alt}
+        value={alt}
         onChange={(alt) => {
           updateData({ ...data, props: { ...data.props, alt } });
         }}

@@ -29,7 +29,7 @@ export default function HtmlSidebarPanel({ data, setData }: HtmlSidebarPanelProp
       <TextInput
         label="Content"
         rows={5}
-        defaultValue={data.props?.contents ?? ''}
+        value={data.props?.contents ?? ''}
         onChange={(contents) => updateData({ ...data, props: { ...data.props, contents } })}
       />
       <MultiStylePropertyPanel

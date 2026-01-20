@@ -47,7 +47,7 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
     <BaseSidebarPanel title="Image block">
       <TextInput
         label="Source URL"
-        defaultValue={data.props?.url ?? ''}
+        value={data.props?.url ?? ''}
         onChange={(v) => {
           const url = v.trim().length === 0 ? null : v.trim();
           updateData({ ...data, props: { ...data.props, url } });
@@ -66,12 +66,12 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
 
       <TextInput
         label="Alt text"
-        defaultValue={data.props?.alt ?? ''}
+        value={data.props?.alt ?? ''}
         onChange={(alt) => updateData({ ...data, props: { ...data.props, alt } })}
       />
       <TextInput
         label="Click through URL"
-        defaultValue={data.props?.linkHref ?? ''}
+        value={data.props?.linkHref ?? ''}
         onChange={(v) => {
           const linkHref = v.trim().length === 0 ? null : v.trim();
           updateData({ ...data, props: { ...data.props, linkHref } });

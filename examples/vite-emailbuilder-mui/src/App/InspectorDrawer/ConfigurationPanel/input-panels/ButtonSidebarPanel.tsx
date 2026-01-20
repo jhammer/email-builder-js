@@ -39,12 +39,12 @@ export default function ButtonSidebarPanel({ data, setData }: ButtonSidebarPanel
     <BaseSidebarPanel title="Button block">
       <TextInput
         label="Text"
-        defaultValue={text}
+        value={text}
         onChange={(text) => updateData({ ...data, props: { ...data.props, text } })}
       />
       <TextInput
         label="Url"
-        defaultValue={url}
+        value={url}
         onChange={(url) => updateData({ ...data, props: { ...data.props, url } })}
       />
       <RadioGroupInput
