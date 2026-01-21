@@ -63,7 +63,7 @@ export default function TemplatePanel() {
     }
   };
 
-  const handleSaveAndClose = async () => {
+  const handleSaveAndClose = async (shouldClose) => {
     const { saveUrl } = getAppConfig();
     try {
       const response = await fetch(saveUrl, {
@@ -80,7 +80,9 @@ export default function TemplatePanel() {
 
       const { redirectUrl } = await response.json();
       clearDirty();
-      window.location.href = redirectUrl;
+      if (shouldClose) {
+        window.location.href = redirectUrl;
+      }
     } catch (error) {
       console.error('Error saving document:', error);
     }
@@ -125,9 +127,14 @@ export default function TemplatePanel() {
         alignItems="center"
       >
         <Stack px={2} direction="row" gap={2} width="100%" justifyContent="space-between" alignItems="center">
-          <Button variant="contained" size="small" onClick={handleSaveAndClose}>
-            Save and Close
-          </Button>
+          <Stack direction="row" gap={1}>
+            <Button variant="contained" size="small" onClick={() => handleSaveAndClose(true)}>
+              ← Back to Messages
+            </Button>
+            <Button variant="contained" size="small" onClick={() => handleSaveAndClose(false)}>
+              Save
+            </Button>
+          </Stack>
           <Stack direction="row" gap={2} alignItems="center">
             <MainTabsGroup />
             <ToggleButtonGroup value={selectedScreenSize} exclusive size="small" onChange={handleScreenSizeChange}>
