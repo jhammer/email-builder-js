@@ -129,7 +129,7 @@ export default function TemplatePanel() {
         <Stack px={2} direction="row" gap={2} width="100%" justifyContent="space-between" alignItems="center">
           <Stack direction="row" gap={1}>
             <Button variant="contained" size="small" onClick={() => handleSaveAndClose(true)}>
-              ← Back to Messages
+              ← Save and Back to Messages
             </Button>
             <Button variant="contained" size="small" onClick={() => handleSaveAndClose(false)}>
               Save
