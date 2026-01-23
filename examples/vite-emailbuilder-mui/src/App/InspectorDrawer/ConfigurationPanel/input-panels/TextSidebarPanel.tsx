@@ -16,6 +16,7 @@ const MAIL_MERGE_TAGS = [
   '[custom 3]',
   '[custom 4]',
   '[custom 5]',
+  '[year]'
 ];
 
 import BaseSidebarPanel from './helpers/BaseSidebarPanel';
